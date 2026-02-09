@@ -20,11 +20,14 @@ function toggleForm() {
 
 // Show Dashboard UI
 function showDashboard(email) {
-    // Hide the entire form container
-    if (mainFormContainer) mainFormContainer.classList.add('hidden');
+    // Hide the login container
+    document.getElementById('auth-container').classList.add('hidden');
     
-    // Show the dashboard and set email text
+    // Show the dashboard container
+    const dashboard = document.getElementById('dashboard');
     dashboard.classList.remove('hidden');
+    
+    // Set the user's email
     document.getElementById('user-display-email').innerText = `Logged in as: ${email}`;
 }
 
@@ -76,3 +79,4 @@ loginForm.addEventListener('submit', async (e) => {
         showDashboard(data.email);
     }
 });
+
