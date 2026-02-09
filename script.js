@@ -1,22 +1,31 @@
-// 1. Initialize Supabase 
-// Replace these with your actual keys from Supabase Settings > API
+// Ensure these match your Supabase Dashboard exactly
 const SB_URL = 'https://qlhqzopuvabupftjskhk.supabase.co';
 const SB_KEY = 'sb_publishable_ZsDq_ajT6EPK5XfmpURbMQ_ck_kkLAM';
 const supabase = supabase.createClient(SB_URL, SB_KEY);
 
-// Select DOM Elements
-const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
-const dashboard = document.getElementById('dashboard');
-const mainFormContainer = document.querySelector('.form-container');
 
-// --- Functions ---
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // This stops the page from refreshing
+    console.log("Register button clicked!"); // Check your console for this!
 
-// Toggle between Login and Register views
-function toggleForm() {
-    loginForm.classList.toggle('hidden');
-    registerForm.classList.toggle('hidden');
-}
+    // Using querySelector to find the inputs inside this specific form
+    const fullName = registerForm.querySelector('input[placeholder="Full Name"]').value;
+    const email = registerForm.querySelector('input[placeholder="Email"]').value;
+
+    const { data, error } = await supabase
+        .from('profiles')
+        .insert([{ full_name: fullName, email: email }]);
+
+    if (error) {
+        console.error("Supabase Error:", error);
+        alert("Error: " + error.message);
+    } else {
+        alert("Success! Account created.");
+        toggleForm(); // Switch to login view
+        registerForm.reset();
+    }
+});
 
 // Show Dashboard UI
 function showDashboard(email) {
@@ -79,4 +88,5 @@ loginForm.addEventListener('submit', async (e) => {
         showDashboard(data.email);
     }
 });
+
 
